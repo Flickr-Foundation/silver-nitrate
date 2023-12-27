@@ -7,3 +7,5 @@ pip-tools
 pytest
 pytest-cov
 twine
+
+keyring
