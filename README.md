@@ -45,5 +45,3 @@ This project is dual-licensed as Apache-2.0 and MIT.
 
 validate_typeddict
 get_typed_fixture
-cassette_name
-vcr_cassette
