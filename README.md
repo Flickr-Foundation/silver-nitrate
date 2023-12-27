@@ -1,5 +1,13 @@
 # silver-nitrate
 
+This is a collection of Python utilities used by [the Flickr Foundation](https://www.flickr.org/).
+It allows us to share certain functions and common code across all our projects.
+
+Think of it as a souped-up version of `utils.py`.
+
+This library is primarily for our use, but the code is fairly generic and may well be useful in other projects.
+If you want to use it, copy/paste the code (and the associated tests!) into your own project rather than adding a dependency on this library.
+
 <figure>
   <a href="https://www.flickr.com/photos/podsville/3912488857">
     <img src="https://live.staticflickr.com/3438/3912488857_78a5103b69_c_d.jpg">
@@ -11,15 +19,26 @@
   </figcaption>
 </figure>
 
-DatetimeEncoder
-DatetimeDecoder
-get_required_password
-find_required_elem
-find_required_text
-find_optional_text
+## What's in a name?
 
-InMemoryKeyring
-validate_typeddict
-get_typed_fixture
-cassette_name
-vcr_cassette
+I wanted to pick a name that was:
+
+1.  More interesting than "utils"
+2.  Had a connection to photography
+3.  Wasn't taken on PyPI
+
+Silver nitrate was a key chemical in the early days of photography, especially in the 19th and early 20th centuries.
+
+Photographers would coat glass plates with a mixture of chemicals, including silver nitrate.
+Because silver nitrate reacts when exposed to light, when you put the plate in a camera and open the shutter, different areas would react differently to create an image on the plate.
+You could then develop this plate into a photograph.
+
+This code is key to our work at the Flickr Foundation, so I thought it was a fitting name.
+
+## Development
+
+If you want to make changes to the library, there are instructions in [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## License
+
+This project is dual-licensed as Apache-2.0 and MIT.
