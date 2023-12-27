@@ -1,9 +1,11 @@
+import datetime
 import pathlib
 from typing import Any, TypedDict
 
 import pytest
 from pydantic import ValidationError
 
+from nitrate.json import DatetimeDecoder
 from nitrate.types import read_typed_json, validate_type
 
 
@@ -52,3 +54,25 @@ def test_read_typed_json_flags_invalid_data(tmp_path: pathlib.Path) -> None:
 
     with pytest.raises(ValidationError):
         read_typed_json(json_path, model=dict[str, str])
+
+
+def test_read_typed_json_uses_decoder(tmp_path: pathlib.Path) -> None:
+    json_path = tmp_path / "data.json"
+
+    with open(json_path, "w") as out_file:
+        out_file.write(
+            '{"date": {"type": "datetime.datetime", "value": "2023-12-27T14:16:02Z"}}'
+        )
+
+    with pytest.raises(ValidationError):
+        read_typed_json(json_path, model=dict[str, datetime.datetime])
+
+    expected = {
+        "date": datetime.datetime(2023, 12, 27, 14, 16, 2, tzinfo=datetime.timezone.utc)
+    }
+
+    actual = read_typed_json(
+        json_path, model=dict[str, datetime.datetime], cls=DatetimeDecoder
+    )
+
+    assert actual == expected
