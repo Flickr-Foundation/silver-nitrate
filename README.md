@@ -43,10 +43,6 @@ If you want to make changes to the library, there are instructions in [CONTRIBUT
 
 This project is dual-licensed as Apache-2.0 and MIT.
 
-find_required_elem
-find_required_text
-find_optional_text
-
 validate_typeddict
 get_typed_fixture
 cassette_name
