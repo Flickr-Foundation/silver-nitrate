@@ -42,6 +42,3 @@ If you want to make changes to the library, there are instructions in [CONTRIBUT
 ## License
 
 This project is dual-licensed as Apache-2.0 and MIT.
-
-validate_typeddict
-get_typed_fixture
