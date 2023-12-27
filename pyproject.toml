@@ -1,0 +1,74 @@
+[build-system]
+requires = [
+    "setuptools >= 65",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "silver-nitrate"
+description = "Python utilities used by the Flickr Foundation"
+readme = "README.md"
+keywords = ["flickr"]
+authors = [
+  {name = "Flickr Foundation", email = "hello@flickr.org"},
+]
+maintainers = [
+  {name = "Alex Chan", email="alex@flickr.org"},
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: Apache Software License",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.12"
+dependencies = []
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/Flickr-Foundation/silver-nitrate"
+"Changelog" = "https://github.com/Flickr-Foundation/silver-nitrate/blob/main/CHANGELOG.md"
+
+[tool.setuptools.dynamic]
+version = {attr = "nitrate.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+nitrate = ["py.typed"]
+
+[tool.coverage.run]
+branch = true
+source = [
+  "nitrate",
+  "tests",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 100
+
+[tool.pytest.ini_options]
+filterwarnings = [
+  "error",
+]
+
+[tool.mypy]
+mypy_path = "src"
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+no_implicit_reexport = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
