@@ -50,13 +50,18 @@ def validate_type(t: Any, *, model: type[T]) -> T:
     return validator.validate_python(t, strict=True)
 
 
-def read_typed_json(path: pathlib.Path | str, *, model: type[T]) -> T:
+def read_typed_json(
+    path: pathlib.Path | str,
+    *,
+    model: type[T],
+    cls: type[json.JSONDecoder] | None = None,
+) -> T:
     """
     Read a JSON file and validate that its contents contain the
     correct type.
     """
     with open(path) as in_file:
-        t = json.load(in_file)
+        t = json.load(in_file, cls=cls)
 
     return validate_type(t, model=model)
 
