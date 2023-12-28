@@ -34,31 +34,42 @@ def get_required_password(service_name: str, username: str) -> str:
     return password
 
 
-class InMemoryKeyring(keyring.backend.KeyringBackend):
-    """
-    A keyring implementation which stores passwords in a dictionary.
+def use_in_memory_keyring(initial_passwords: dict[tuple[str, str], str]) -> None:
+    class InMemoryKeyring(keyring.backend.KeyringBackend):
+        """
+        A keyring implementation which stores passwords in a dictionary.
 
-    This is for testing only.
-    """
+        This is for testing only.
+        """
 
-    def __init__(self) -> None:
-        self.passwords: dict[tuple[str, str], str] = {}
+        def __init__(self) -> None:
+            self.passwords: dict[tuple[str, str], str] = {}
 
-    def priority(self) -> int:  # pragma: no cover
-        return 1
+        @property
+        def priority(self) -> int:  # pragma: no cover
+            # We set a very high priority, so when this backend is used,
+            # it will supersede any others.
+            return 1_000_000
 
-    def set_password(self, service_name: str, username: str, password: str) -> None:
-        self.passwords[(service_name, username)] = password
+        def set_password(self, service_name: str, username: str, password: str) -> None:
+            self.passwords[(service_name, username)] = password
 
-    def get_password(self, service_name: str, username: str) -> str | None:
-        return self.passwords.get((service_name, username))
+        def get_password(self, service_name: str, username: str) -> str | None:
+            return self.passwords.get((service_name, username))
 
-    # This function isn't currently used as part of the tests, but we
-    # need it to construct an instance of KeyringBackend.
-    def delete_password(
-        self, service_name: str, username: str
-    ) -> None:  # pragma: no cover
-        del self.passwords[(service_name, username)]
+        # This function isn't currently used as part of the tests, but we
+        # need it to construct an instance of KeyringBackend.
+        def delete_password(
+            self, service_name: str, username: str
+        ) -> None:  # pragma: no cover
+            del self.passwords[(service_name, username)]
+
+    kr = InMemoryKeyring()
+
+    for (service_name, username), password in initial_passwords.items():
+        kr.set_password(service_name, username, password)
+
+    keyring.set_keyring(kr)
 
 
 __all__ = ["get_required_password"]

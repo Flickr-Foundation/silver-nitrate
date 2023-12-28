@@ -1,18 +1,14 @@
-import keyring
 import pytest
 
-from nitrate.passwords import InMemoryKeyring, get_required_password
+from nitrate.passwords import get_required_password, use_in_memory_keyring
 
 
 class TestGetRequiredPassword:
     def test_gets_existing_password(self) -> None:
-        keyring.set_keyring(InMemoryKeyring())
-        keyring.set_password("flickr", "api_key", "12345")
+        use_in_memory_keyring(initial_passwords={("flickr", "api_key"): "12345"})
 
         assert get_required_password("flickr", "api_key") == "12345"
 
     def test_throws_if_password_does_not_exist(self) -> None:
-        keyring.set_keyring(InMemoryKeyring())
-
         with pytest.raises(RuntimeError, match="Could not retrieve password"):
-            get_required_password("flickr", "api_key")
+            get_required_password("doesnotexist", "doesnotexist")
