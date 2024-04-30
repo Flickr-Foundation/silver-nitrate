@@ -5,12 +5,12 @@ Some helper methods for writing type-safe Python.
 import functools
 import json
 import pathlib
-from typing import Any, Hashable, TypeVar
+import typing
 
 from pydantic import ConfigDict, TypeAdapter
 
 
-T = TypeVar("T")
+T = typing.TypeVar("T")
 
 
 @functools.cache
@@ -28,7 +28,7 @@ def _get_validator(model: type[T]) -> TypeAdapter[T]:
     return TypeAdapter(model)
 
 
-def validate_type(t: Any, *, model: type[T]) -> T:
+def validate_type(t: typing.Any, *, model: type[T]) -> T:
     """
     Check that some data matches a given type.
 
@@ -43,7 +43,7 @@ def validate_type(t: Any, *, model: type[T]) -> T:
     #     Argument 1 to "__call__" of "_lru_cache_wrapper"
     #     has incompatible type "type[T]"; expected "Hashable"
     #
-    assert isinstance(model, Hashable)
+    assert isinstance(model, typing.Hashable)
 
     validator = _get_validator(model)
 

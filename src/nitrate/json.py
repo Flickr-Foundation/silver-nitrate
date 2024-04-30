@@ -8,13 +8,13 @@ than e.g. strings.
 
 import datetime
 import json
-from typing import Any, Literal, TypedDict, TypeVar
+import typing
 
 
-T = TypeVar("T")
+T = typing.TypeVar("T")
 
-EncodedDate = TypedDict(
-    "EncodedDate", {"type": Literal["datetime.datetime"], "value": str}
+EncodedDate = typing.TypedDict(
+    "EncodedDate", {"type": typing.Literal["datetime.datetime"], "value": str}
 )
 
 
@@ -53,7 +53,9 @@ class DatetimeDecoder(json.JSONDecoder):
     def __init__(self) -> None:
         super().__init__(object_hook=self.dict_to_object)
 
-    def dict_to_object(self, d: dict[str, Any]) -> dict[str, Any] | datetime.datetime:
+    def dict_to_object(
+        self, d: dict[str, typing.Any]
+    ) -> dict[str, typing.Any] | datetime.datetime:
         if d.get("type") == "datetime.datetime":
             return datetime.datetime.fromisoformat(d["value"])
         else:
