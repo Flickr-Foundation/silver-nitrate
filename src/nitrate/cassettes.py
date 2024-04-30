@@ -7,7 +7,7 @@ and how they're named.
 [1]: https://vcrpy.readthedocs.io/
 """
 
-from collections.abc import Generator
+from collections.abc import Iterator
 
 import pytest
 import vcr
@@ -48,7 +48,7 @@ def cassette_name(request: pytest.FixtureRequest) -> str:
 
 
 @pytest.fixture(scope="function")
-def vcr_cassette(cassette_name: str) -> Generator[Cassette, None, None]:
+def vcr_cassette(cassette_name: str) -> Iterator[Cassette]:
     """
     Creates a VCR cassette for use in tests.
 
