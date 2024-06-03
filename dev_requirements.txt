@@ -7,9 +7,7 @@ anyio==4.4.0
 black==24.4.2
     # via -r dev_requirements.in
 build==1.2.1
-    # via
-    #   -r dev_requirements.in
-    #   pip-tools
+    # via -r dev_requirements.in
 certifi==2024.6.2
     # via
     #   httpcore
@@ -18,9 +16,7 @@ certifi==2024.6.2
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
-    # via
-    #   black
-    #   pip-tools
+    # via black
 coverage==7.5.3
     # via
     #   -r dev_requirements.in
@@ -82,10 +78,6 @@ packaging==24.0
     #   pytest
 pathspec==0.12.1
     # via black
-pip==24.0
-    # via pip-tools
-pip-tools==7.4.1
-    # via -r dev_requirements.in
 pkginfo==1.11.0
     # via twine
 platformdirs==4.2.2
@@ -105,9 +97,7 @@ pygments==2.18.0
     #   readme-renderer
     #   rich
 pyproject-hooks==1.1.0
-    # via
-    #   build
-    #   pip-tools
+    # via build
 pytest==8.2.1
     # via
     #   -r dev_requirements.in
@@ -128,8 +118,6 @@ rfc3986==2.0.0
     # via twine
 rich==13.7.1
     # via twine
-setuptools==70.0.0
-    # via pip-tools
 sniffio==1.3.1
     # via
     #   anyio
@@ -147,8 +135,6 @@ urllib3==2.2.1
     #   twine
 vcrpy==6.0.1
     # via -r dev_requirements.in
-wheel==0.43.0
-    # via pip-tools
 wrapt==1.16.0
     # via vcrpy
 yarl==1.9.4
