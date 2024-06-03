@@ -1,12 +1,8 @@
-black
 build
-coverage
-flake8
 httpx
 mypy
-pip-tools
-pytest
 pytest-cov
+ruff
 twine
 
 keyring

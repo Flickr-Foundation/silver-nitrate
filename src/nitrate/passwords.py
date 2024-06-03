@@ -46,10 +46,10 @@ def use_in_memory_keyring(initial_passwords: dict[tuple[str, str], str]) -> None
             self.passwords: dict[tuple[str, str], str] = {}
 
         @property
-        def priority(self) -> int:  # pragma: no cover
+        def priority(self) -> int:  # type: ignore
             # We set a very high priority, so when this backend is used,
             # it will supersede any others.
-            return 1_000_000
+            return 1_000_000  # pragma: no cover
 
         def set_password(self, service_name: str, username: str, password: str) -> None:
             self.passwords[(service_name, username)] = password
