@@ -31,11 +31,11 @@ class DatetimeEncoder(json.JSONEncoder):
 
     """
 
-    def default(self, t: T) -> T | EncodedDate:
+    def default(self, t: T) -> typing.Any:
         if isinstance(t, datetime.datetime):
             return {"type": "datetime.datetime", "value": t.isoformat()}
-        else:  # pragma: no cover
-            return t
+        else:
+            return super().default(t)
 
 
 class DatetimeDecoder(json.JSONDecoder):
