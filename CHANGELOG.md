@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.1.1 - 2024-06-06
+
+Fix a bug with the JSON encoder where throw a `ValueError: Circular reference detected` error for types which can't be encoded.
+
 ## v1.1.0 - 2023-12-28
 
 Replace the `InMemoryKeyring` class with a new function `use_in_memory_keyring()`.
