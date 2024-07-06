@@ -1,6 +1,6 @@
 import contextlib
 
-from .cassette import Cassette
+from vcr.cassette import Cassette
 
 def use_cassette(
     cassette_name: str,
