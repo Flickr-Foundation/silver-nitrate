@@ -30,10 +30,10 @@ def get_cassette_name(request: pytest.FixtureRequest) -> str:
     # This is to catch cases where e.g. we try to include a complete
     # HTTP URL in a cassette name, which creates very messy folders in
     # the fixtures directory.
-    if any(char in name for char in ":/."):
+    if any(char in name for char in ":/"):
         raise ValueError(
             "Illegal characters in VCR cassette name - "
-            "please set a test ID with @pytest.param(…, id='…')"
+            "please set a test ID with pytest.param(…, id='…')"
         )
 
     if request.cls is not None:

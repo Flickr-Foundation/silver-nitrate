@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.1.2 - 2024-07-15
+
+Allow periods in the names of VCR cassettes created by `nitrate.cassettes`.
+
 ## v1.1.1 - 2024-06-06
 
 Fix a bug with the JSON encoder where throw a `ValueError: Circular reference detected` error for types which can't be encoded.

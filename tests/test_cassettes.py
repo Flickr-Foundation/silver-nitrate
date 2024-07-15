@@ -45,6 +45,10 @@ class TestCassetteNameInClass:
                 "TestCassetteNameInClass.test_prefixes_name_with_parametrized_cassette[test3].yml",
                 id="test3",
             ),
+            pytest.param(
+                "TestCassetteNameInClass.test_prefixes_name_with_parametrized_cassette[test.name.with.periods].yml",
+                id="test.name.with.periods",
+            ),
         ],
     )
     def test_prefixes_name_with_parametrized_cassette(
