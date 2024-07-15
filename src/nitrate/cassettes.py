@@ -33,7 +33,7 @@ def get_cassette_name(request: pytest.FixtureRequest) -> str:
     if any(char in name for char in ":/."):
         raise ValueError(
             "Illegal characters in VCR cassette name - "
-            "please set a test ID with @pytest.param(…, id='…')"
+            "please set a test ID with pytest.param(…, id='…')"
         )
 
     if request.cls is not None:
