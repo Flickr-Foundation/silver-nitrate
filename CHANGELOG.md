@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.1.3 - 2024-08-09
+
+VCR cassettes recorded with the `vcr_cassette` fixture will now store responses as plain text strings, not binary-encoded data.
+
 ## v1.1.2 - 2024-07-15
 
 Allow periods in the names of VCR cassettes created by `nitrate.cassettes`.
