@@ -59,6 +59,7 @@ def vcr_cassette(cassette_name: str) -> Iterator[Cassette]:
     with vcr.use_cassette(
         cassette_name,
         cassette_library_dir="tests/fixtures/cassettes",
+        decode_compressed_response=True,
     ) as cassette:
         yield cassette
 
