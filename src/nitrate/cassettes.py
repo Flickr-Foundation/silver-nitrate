@@ -44,6 +44,12 @@ def get_cassette_name(request: pytest.FixtureRequest) -> str:
 
 @pytest.fixture(scope="function")
 def cassette_name(request: pytest.FixtureRequest) -> str:
+    """
+    Returns the filename of a VCR cassette to use in tests.
+
+    This is useful when you need some custom vcr.py options, and
+    can't use the prebuilt ``vcr_cassette`` fixture.
+    """
     return get_cassette_name(request)
 
 
