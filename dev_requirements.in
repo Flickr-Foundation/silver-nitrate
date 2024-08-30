@@ -2,6 +2,7 @@
 
 build
 httpx
+interrogate
 mypy
 pytest-cov
 ruff
