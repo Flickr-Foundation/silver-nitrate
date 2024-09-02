@@ -32,6 +32,9 @@ class DatetimeEncoder(json.JSONEncoder):
     """
 
     def default(self, t: T) -> typing.Any:
+        """
+        Convert a Python value to a JSON value.
+        """
         if isinstance(t, datetime.datetime):
             return {"type": "datetime.datetime", "value": t.isoformat()}
         else:
@@ -51,11 +54,20 @@ class DatetimeDecoder(json.JSONDecoder):
     """
 
     def __init__(self) -> None:
+        """
+        Create a new JSONDecoder.
+
+        The ``object_hook`` will be called with the result of any
+        object literal that gets decoded.
+        """
         super().__init__(object_hook=self.dict_to_object)
 
     def dict_to_object(
         self, d: dict[str, typing.Any]
     ) -> dict[str, typing.Any] | datetime.datetime:
+        """
+        Convert a JSON value to a Python-native value.
+        """
         if d.get("type") == "datetime.datetime":
             return datetime.datetime.fromisoformat(d["value"])
         else:

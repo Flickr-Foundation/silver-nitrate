@@ -1,3 +1,7 @@
+"""
+Tests for ``nitrate.types``.
+"""
+
 import datetime
 import pathlib
 import typing
@@ -9,9 +13,7 @@ from nitrate.json import DatetimeDecoder
 from nitrate.types import read_typed_json, validate_type
 
 
-class Shape(typing.TypedDict):
-    color: str
-    sides: int
+Shape = typing.TypedDict("Shape", {"color": str, "sides": int})
 
 
 @pytest.mark.parametrize(
@@ -25,19 +27,34 @@ class Shape(typing.TypedDict):
     ],
 )
 def test_validate_type_flags_incorrect_data(data: typing.Any) -> None:
+    """
+    If you pass data that doesn't match the model to ``validate_type``,
+    it throws a ``ValidationError``.
+    """
     with pytest.raises(ValidationError):
         validate_type(data, model=Shape)
 
 
 def test_validate_type_allows_valid_data() -> None:
+    """
+    If you pass data which matches the model to ``validate_type``,
+    it passes without exception.
+    """
     validate_type({"color": "red", "sides": 4}, model=Shape)
 
 
 def test_validate_type_supports_builtin_types() -> None:
+    """
+    You can validate builtin types with ``validate_type``.
+    """
     validate_type([1, 2, 3], model=list[int])
 
 
 def test_read_typed_json_allows_valid_data(tmp_path: pathlib.Path) -> None:
+    """
+    If you read a JSON file which matches the model with ``read_typed_json``,
+    it returns the data.
+    """
     json_path = tmp_path / "data.json"
 
     with open(json_path, "w") as out_file:
@@ -47,6 +64,10 @@ def test_read_typed_json_allows_valid_data(tmp_path: pathlib.Path) -> None:
 
 
 def test_read_typed_json_flags_invalid_data(tmp_path: pathlib.Path) -> None:
+    """
+    If you read a JSON file which doesn't match the model with
+    ``read_typed_json``, it throws a ``ValidationError``.
+    """
     json_path = tmp_path / "data.json"
 
     with open(json_path, "w") as out_file:
@@ -57,6 +78,10 @@ def test_read_typed_json_flags_invalid_data(tmp_path: pathlib.Path) -> None:
 
 
 def test_read_typed_json_uses_decoder(tmp_path: pathlib.Path) -> None:
+    """
+    If you pass a custom decoder to ``read_typed_json``, it will use that
+    to decode the JSON before validating it against the model.
+    """
     json_path = tmp_path / "data.json"
 
     with open(json_path, "w") as out_file:
