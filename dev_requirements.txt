@@ -90,8 +90,12 @@ pygments==2.18.0
 pyproject-hooks==1.1.0
     # via build
 pytest==8.2.1
-    # via pytest-cov
+    # via
+    #   pytest-cov
+    #   pytest-vcr
 pytest-cov==5.0.0
+    # via -r dev_requirements.in
+pytest-vcr==1.0.2
     # via -r dev_requirements.in
 pyyaml==6.0.1
     # via vcrpy
@@ -127,7 +131,9 @@ urllib3==2.2.1
     #   requests
     #   twine
 vcrpy==6.0.1
-    # via -r dev_requirements.in
+    # via
+    #   -r dev_requirements.in
+    #   pytest-vcr
 wrapt==1.16.0
     # via vcrpy
 yarl==1.9.4

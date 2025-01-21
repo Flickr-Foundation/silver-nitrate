@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.2.0 - 2025-01-21
+
+Add a new module `nitrate.comments` which contains a single function `fix_wikipedia_links`.
+
+This is for fixing the auto-detected links in Flickr comments, where Wikipedia URLs are often detected incorrectly.
+
 ## v1.1.3 - 2024-08-09
 
 VCR cassettes recorded with the `vcr_cassette` fixture will now store responses as plain text strings, not binary-encoded data.

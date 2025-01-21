@@ -5,6 +5,7 @@ httpx
 interrogate
 mypy
 pytest-cov
+pytest-vcr
 ruff
 twine
 
