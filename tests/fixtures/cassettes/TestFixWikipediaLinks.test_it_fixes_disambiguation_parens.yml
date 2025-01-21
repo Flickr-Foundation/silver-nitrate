@@ -13,11 +13,12 @@ interactions:
       user-agent:
       - python-httpx/0.27.0
     method: GET
-    uri: https://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=Flickr&rvprop=timestamp&format=xml
+    uri: https://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=Reg_Dixon_&rvprop=timestamp&format=xml
   response:
     body:
-      string: <?xml version="1.0"?><api batchcomplete=""><query><pages><page _idx="1178458"
-        pageid="1178458" ns="0" title="Flickr"><revisions><rev timestamp="2025-01-18T07:21:27Z"
+      string: <?xml version="1.0"?><api batchcomplete=""><query><normalized><n from="Reg_Dixon_"
+        to="Reg Dixon" /></normalized><pages><page _idx="46633604" pageid="46633604"
+        ns="0" title="Reg Dixon"><revisions><rev timestamp="2024-10-10T22:42:02Z"
         /></revisions></page></pages></query></api>
     headers:
       accept-ranges:
@@ -29,11 +30,11 @@ interactions:
       content-disposition:
       - inline; filename=api-result.xml
       content-length:
-      - '209'
+      - '277'
       content-type:
       - text/xml; charset=utf-8
       date:
-      - Tue, 21 Jan 2025 17:08:34 GMT
+      - Tue, 21 Jan 2025 17:08:36 GMT
       nel:
       - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
         0.0}'
@@ -41,7 +42,7 @@ interactions:
       - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
         }] }'
       server:
-      - mw-api-ext.eqiad.main-566cd6555b-tswm4
+      - mw-api-ext.eqiad.main-566cd6555b-ppwdd
       server-timing:
       - cache;desc="pass", host;desc="cp3070"
       set-cookie:
@@ -82,26 +83,28 @@ interactions:
       user-agent:
       - python-httpx/0.27.0
     method: GET
-    uri: https://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=Flickr.&rvprop=timestamp&format=xml
+    uri: https://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=Reg_Dixon_%28comedian%29&rvprop=timestamp&format=xml
   response:
     body:
-      string: <?xml version="1.0"?><api batchcomplete=""><query><pages><page _idx="-1"
-        ns="0" title="Flickr." missing="" /></pages></query></api>
+      string: <?xml version="1.0"?><api batchcomplete=""><query><normalized><n from="Reg_Dixon_(comedian)"
+        to="Reg Dixon (comedian)" /></normalized><pages><page _idx="72662751" pageid="72662751"
+        ns="0" title="Reg Dixon (comedian)"><revisions><rev timestamp="2025-01-02T04:05:25Z"
+        /></revisions></page></pages></query></api>
     headers:
       accept-ranges:
       - bytes
       age:
-      - '2'
+      - '0'
       cache-control:
       - private, must-revalidate, max-age=0
       content-disposition:
       - inline; filename=api-result.xml
       content-length:
-      - '131'
+      - '309'
       content-type:
       - text/xml; charset=utf-8
       date:
-      - Tue, 21 Jan 2025 17:08:34 GMT
+      - Tue, 21 Jan 2025 17:08:37 GMT
       nel:
       - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
         0.0}'
@@ -109,7 +112,7 @@ interactions:
       - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
         }] }'
       server:
-      - mw-api-ext.eqiad.main-566cd6555b-vbsv7
+      - mw-api-ext.eqiad.main-566cd6555b-szmws
       server-timing:
       - cache;desc="pass", host;desc="cp3070"
       set-cookie:

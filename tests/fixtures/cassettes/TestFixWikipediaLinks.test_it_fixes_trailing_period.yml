@@ -33,7 +33,7 @@ interactions:
       content-type:
       - text/xml; charset=utf-8
       date:
-      - Tue, 21 Jan 2025 16:55:08 GMT
+      - Tue, 21 Jan 2025 17:08:35 GMT
       nel:
       - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
         0.0}'
@@ -41,7 +41,7 @@ interactions:
       - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
         }] }'
       server:
-      - mw-api-ext.eqiad.main-566cd6555b-lvvh7
+      - mw-api-ext.eqiad.canary-7fc6d768c5-bz26s
       server-timing:
       - cache;desc="pass", host;desc="cp3070"
       set-cookie:
@@ -103,7 +103,7 @@ interactions:
       content-type:
       - text/xml; charset=utf-8
       date:
-      - Tue, 21 Jan 2025 16:55:08 GMT
+      - Tue, 21 Jan 2025 17:08:35 GMT
       nel:
       - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
         0.0}'
@@ -111,7 +111,7 @@ interactions:
       - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
         }] }'
       server:
-      - mw-api-ext.eqiad.main-566cd6555b-ppwdd
+      - mw-api-ext.eqiad.main-566cd6555b-hhl4n
       server-timing:
       - cache;desc="pass", host;desc="cp3070"
       set-cookie:

@@ -5,6 +5,7 @@ In particular, it has some code shared across our
 """
 
 import re
+import typing
 from xml.etree import ElementTree as ET
 
 import httpx
@@ -37,38 +38,59 @@ def fix_wikipedia_links(comment_text: str) -> str:
         r' rel="noreferrer nofollow">'
         r"en\.wikipedia\.org/wiki/(?P<slug2>[A-Za-z_]+)"
         r"</a>"
-        r"\.",
+        # The suffix can be:
+        #
+        #   - a full stop, which stands alone
+        #   - some text in parentheses, which is a disambiguation string.
+        #     This must be some non-empty text in parens.
+        #
+        r"(?P<suffix>\.|\([^\)]+\))",
         comment_text,
     ):
+        print(m)
         # This is a defensive measure, because it was easier than
         # getting lookback groups working in the regex.
         if m.group("slug1") != m.group("slug2"):  # pragma: no cover
             continue
 
-        title = m.group("slug1")
+        orig_title = m.group("slug1")
 
-        # if does_wikipedia_page_exist()
+        # If there's a Wikipedia page with this exact title, then the
+        # link works and we can leave it as-is.
+        if _get_wikipedia_page(orig_title) == "found":
+            continue
 
-        if not does_wikipedia_page_exist(title) and does_wikipedia_page_exist(
-            title + "."
-        ):
-            new_title = title + "."
+        # Otherwise, check to see if there's a page with the suffix
+        # added -- and if there does, use that as the new link.
+        alt_title = orig_title + m.group("suffix")
 
+        print(orig_title)
+        print(alt_title)
+
+        if _get_wikipedia_page(alt_title) == "found":
             comment_text = comment_text.replace(
                 m.group(0),
                 (
-                    f'<a href="https://en.wikipedia.org/wiki/{new_title}" '
+                    f'<a href="https://en.wikipedia.org/wiki/{alt_title}" '
                     'rel="noreferrer nofollow">'
-                    f"en.wikipedia.org/wiki/{new_title}</a>"
+                    f"en.wikipedia.org/wiki/{alt_title}</a>"
                 ),
             )
 
     return comment_text
 
 
-def does_wikipedia_page_exist(title: str) -> bool:
+WikipediaPageStatus = typing.Literal["found", "redirected", "not_found"]
+
+
+def _get_wikipedia_page(title: str) -> WikipediaPageStatus:
     """
-    Does a page with this title exist on Wikipedia?
+    Look up a page on Wikipedia and see whether it:
+
+    1.  Exists, with the given title
+    2.  Exists, but the title is normalized/redirected
+    3.  Isn't found
+
     """
     resp = httpx.get(
         "https://en.wikipedia.org/w/api.php",
@@ -100,8 +122,30 @@ def does_wikipedia_page_exist(title: str) -> bool:
     #        </pages>
     #      </query>
     #    </api>
-    #
-    # If it has the ``missing`` attribute, then there's no such page.
+
+    # If the <page> element has the ``missing`` attribute, then there's
+    # no such page.
     page = find_required_elem(xml, path=".//page")
 
-    return "missing" not in page.attrib
+    if "missing" in page.attrib:
+        return "not_found"
+
+    # If the <page> element has the exact same title as the thing we
+    # searched for, then it exists.
+    #
+    # (Note: Wikipedia replaces spaces with underscores in URLs, which
+    # we undo to compare titles.)
+    if page.attrib["title"] == title.replace("_", " "):
+        return "found"
+
+    # If we found a <page> element but it doesn't have the expected title,
+    # we may have been redirected.
+    if xml.find(".//normalized") is not None:
+        return "redirected"
+
+    # This should never happen in practice so we can't test it, but we
+    # include it for the sake of easy debugging if it does.
+    else:  # pragma: no cover
+        raise RuntimeError(
+            f"Unable to parse Wikipedia API response for {title!r}: {resp.text}"
+        )

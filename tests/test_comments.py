@@ -58,3 +58,39 @@ class TestFixWikipediaLinks:
         )
 
         assert fix_wikipedia_links(comment_text) == expected_text
+
+    @pytest.mark.vcr()
+    def test_it_skips_unwanted_trailing_period(self) -> None:
+        """
+        If the trailing period isn't part of the Wikipedia page title,
+        that period isn't added to the URL.
+        """
+        comment_text = 'You’re thinking of <a href="https://en.wikipedia.org/wiki/Longitude">en.wikipedia.org/wiki/Longitude</a>.'
+
+        assert fix_wikipedia_links(comment_text) == comment_text
+
+    @pytest.mark.vcr()
+    def test_it_skips_ambiguous_url(self) -> None:
+        """
+        If there's no Wikipedia page with or without the punctuation,
+        it leaves the link as-is -- there's no obviously right thing
+        for us to do here.
+        """
+        comment_text = 'This page <a href="https://en.wikipedia.org/wiki/DoesNotExist" rel="noreferrer nofollow">en.wikipedia.org/wiki/DoesNotExist</a>.'
+
+        assert fix_wikipedia_links(comment_text) == comment_text
+
+    @pytest.mark.vcr()
+    def test_it_fixes_disambiguation_parens(self) -> None:
+        """
+        If there's a Wikipedia URL that has disambiguation parens at
+        the end, that extra text is identified as part of the URL.
+        """
+        # This example comes from Jessamyn's comment here:
+        # https://www.flickr.com/photos/twm_news/5257092205/#comment72157720409554465
+        #
+        # Retrieved 21 January 2025
+        comment_text = 'This guy! <a href="https://en.wikipedia.org/wiki/Reg_Dixon_" rel="noreferrer nofollow">en.wikipedia.org/wiki/Reg_Dixon_</a>(comedian)'
+        expected_text = 'This guy! <a href="https://en.wikipedia.org/wiki/Reg_Dixon_(comedian)" rel="noreferrer nofollow">en.wikipedia.org/wiki/Reg_Dixon_(comedian)</a>'
+
+        assert fix_wikipedia_links(comment_text) == expected_text
