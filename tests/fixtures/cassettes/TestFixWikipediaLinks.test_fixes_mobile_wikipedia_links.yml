@@ -1,0 +1,142 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - en.wikipedia.org
+      user-agent:
+      - python-httpx/0.27.0
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=Black_Thursday_&rvprop=timestamp&format=xml
+  response:
+    body:
+      string: <?xml version="1.0"?><api batchcomplete=""><query><normalized><n from="Black_Thursday_"
+        to="Black Thursday" /></normalized><pages><page _idx="2547445" pageid="2547445"
+        ns="0" title="Black Thursday"><revisions><rev timestamp="2024-12-24T03:31:39Z"
+        /></revisions></page></pages></query></api>
+    headers:
+      accept-ranges:
+      - bytes
+      age:
+      - '0'
+      cache-control:
+      - private, must-revalidate, max-age=0
+      content-disposition:
+      - inline; filename=api-result.xml
+      content-length:
+      - '290'
+      content-type:
+      - text/xml; charset=utf-8
+      date:
+      - Wed, 22 Jan 2025 09:26:09 GMT
+      nel:
+      - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
+        0.0}'
+      report-to:
+      - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
+        }] }'
+      server:
+      - mw-api-ext.eqiad.main-8687d6474-r6ktv
+      server-timing:
+      - cache;desc="pass", host;desc="cp3070"
+      set-cookie:
+      - WMF-Last-Access=22-Jan-2025;Path=/;HttpOnly;secure;Expires=Sun, 23 Feb 2025
+        00:00:00 GMT
+      - WMF-Last-Access-Global=22-Jan-2025;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Sun,
+        23 Feb 2025 00:00:00 GMT
+      - GeoIP=GB:ENG:Uxbridge:51.53:-0.49:v4; Path=/; secure; Domain=.wikipedia.org
+      - NetworkProbeLimit=0.001;Path=/;Secure;SameSite=Lax;Max-Age=3600
+      strict-transport-security:
+      - max-age=106384710; includeSubDomains; preload
+      vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      x-cache:
+      - cp3070 miss, cp3070 pass
+      x-cache-status:
+      - pass
+      x-client-ip:
+      - 149.40.102.50
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - en.wikipedia.org
+      user-agent:
+      - python-httpx/0.27.0
+    method: GET
+    uri: https://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=Black_Thursday_%281851%29&rvprop=timestamp&format=xml
+  response:
+    body:
+      string: <?xml version="1.0"?><api batchcomplete=""><query><normalized><n from="Black_Thursday_(1851)"
+        to="Black Thursday (1851)" /></normalized><pages><page _idx="48352711" pageid="48352711"
+        ns="0" title="Black Thursday (1851)"><revisions><rev timestamp="2017-04-30T16:41:55Z"
+        /></revisions></page></pages></query></api>
+    headers:
+      accept-ranges:
+      - bytes
+      age:
+      - '0'
+      cache-control:
+      - private, must-revalidate, max-age=0
+      content-disposition:
+      - inline; filename=api-result.xml
+      content-length:
+      - '312'
+      content-type:
+      - text/xml; charset=utf-8
+      date:
+      - Wed, 22 Jan 2025 09:26:09 GMT
+      nel:
+      - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
+        0.0}'
+      report-to:
+      - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
+        }] }'
+      server:
+      - mw-api-ext.eqiad.canary-7d54558669-zg6bw
+      server-timing:
+      - cache;desc="pass", host;desc="cp3070"
+      set-cookie:
+      - WMF-Last-Access=22-Jan-2025;Path=/;HttpOnly;secure;Expires=Sun, 23 Feb 2025
+        00:00:00 GMT
+      - WMF-Last-Access-Global=22-Jan-2025;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Sun,
+        23 Feb 2025 00:00:00 GMT
+      - GeoIP=GB:ENG:Uxbridge:51.53:-0.49:v4; Path=/; secure; Domain=.wikipedia.org
+      - NetworkProbeLimit=0.001;Path=/;Secure;SameSite=Lax;Max-Age=3600
+      strict-transport-security:
+      - max-age=106384710; includeSubDomains; preload
+      vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      x-cache:
+      - cp3070 miss, cp3070 pass
+      x-cache-status:
+      - pass
+      x-client-ip:
+      - 149.40.102.50
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

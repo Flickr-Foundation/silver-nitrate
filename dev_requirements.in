@@ -2,6 +2,7 @@
 
 build
 httpx
+hyperlink
 interrogate
 mypy
 pytest-cov

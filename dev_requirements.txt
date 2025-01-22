@@ -31,10 +31,13 @@ httpcore==1.0.5
     # via httpx
 httpx==0.27.0
     # via -r dev_requirements.in
+hyperlink==21.0.0
+    # via -r dev_requirements.in
 idna==3.7
     # via
     #   anyio
     #   httpx
+    #   hyperlink
     #   requests
     #   yarl
 importlib-metadata==7.1.0

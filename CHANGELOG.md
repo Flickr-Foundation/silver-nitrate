@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v1.3.0 - 2025-01-22
+
+Change `nitrate.comments` to provide a more generic function `fix_comment_text`.
+Currently this just does the Wikipedia link fixing from v1.2.0, but we may add more features in future.
+
+This also improves the Wikipedia link fixing, to include fixing:
+
+*   Links to Wikipedia mobile and non-English Wikipedias
+*   Links to Wikimedia Commons
+*   URL fragments/anchors
+
 ## v1.2.0 - 2025-01-21
 
 Add a new module `nitrate.comments` which contains a single function `fix_wikipedia_links`.
