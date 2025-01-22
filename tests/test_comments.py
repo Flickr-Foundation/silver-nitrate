@@ -129,6 +129,31 @@ class TestFixWikipediaLinks:
         assert fix_comment_text(comment_text) == expected_text
 
     @pytest.mark.vcr()
+    def test_fixes_wikimedia_commons_link(self) -> None:
+        """
+        If there's a Wikimedia Commons URL with extra stuff in the suffix,
+        that gets added to the URL.
+        """
+        # This example comes from Peter D. Tillman's comment:
+        # https://www.flickr.com/photos/aahs_archives/23586820864/#comment72157667048114519
+        #
+        # Retrieved 22 January 2025
+        comment_text = (
+            'In use at <a href="https://en.wikipedia.org/wiki/Bell_YFM-1_Airacuda" rel="nofollow">en.wikipedia.org/wiki/Bell_YFM-1_Airacuda</a>\n'
+            "From SDASM, Daniels collection:\n"
+            '<a href="https://commons.wikimedia.org/wiki/File:Airacuda_Bell_XFM-1_" rel="nofollow">commons.wikimedia.org/wiki/File:Airacuda_Bell_XFM-1_</a>(15954491367).jpg\n'
+            "Thanks for posting these!"
+        )
+        expected_text = (
+            'In use at <a href="https://en.wikipedia.org/wiki/Bell_YFM-1_Airacuda" rel="nofollow">en.wikipedia.org/wiki/Bell_YFM-1_Airacuda</a>\n'
+            "From SDASM, Daniels collection:\n"
+            '<a href="https://commons.wikimedia.org/wiki/File:Airacuda_Bell_XFM-1_(15954491367).jpg" rel="noreferrer nofollow">commons.wikimedia.org/wiki/File:Airacuda_Bell_XFM-1_(15954491367).jpg</a>\n'
+            "Thanks for posting these!"
+        )
+
+        assert fix_comment_text(comment_text) == expected_text
+
+    @pytest.mark.vcr()
     def test_skips_correct_link(self) -> None:
         """
         A Wikipedia link that is correct is unchanged.

@@ -118,6 +118,7 @@ def fix_wikipedia_links(comment_text: str) -> str:
         is_english_wikipedia = url.host in {
             "en.wikipedia.org",
             "en.m.wikipedia.org",
+            "commons.wikimedia.org",
         }
 
         # It's easier to write a regex than enumerate all of these.
