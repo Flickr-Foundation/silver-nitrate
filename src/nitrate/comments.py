@@ -116,6 +116,7 @@ def fix_wikipedia_links(comment_text: str) -> str:
         if url.host not in {
             "en.wikipedia.org",
             "en.m.wikipedia.org",
+            "nl.wikipedia.org",
         }:
             continue
 
@@ -126,14 +127,20 @@ def fix_wikipedia_links(comment_text: str) -> str:
 
         # If there's a Wikipedia page with this exact title, then the
         # link works and we can leave it as-is.
-        if _get_wikipedia_page(orig_page_title) == "found":
+        if (
+            _get_wikipedia_page(wikipedia_host=url.host, title=orig_page_title)
+            == "found"
+        ):
             continue
 
         # Otherwise, check to see if there's a page with the suffix
         # added -- and if there does, use that as the new link.
         alt_page_title = orig_page_title + link["suffix"]
 
-        if _get_wikipedia_page(alt_page_title) == "found":
+        if (
+            _get_wikipedia_page(wikipedia_host=url.host, title=alt_page_title)
+            == "found"
+        ):
             comment_text = comment_text.replace(
                 link["raw_markup"],
                 (
@@ -149,7 +156,7 @@ def fix_wikipedia_links(comment_text: str) -> str:
 WikipediaPageStatus = typing.Literal["found", "redirected", "not_found"]
 
 
-def _get_wikipedia_page(title: str) -> WikipediaPageStatus:
+def _get_wikipedia_page(wikipedia_host: str, title: str) -> WikipediaPageStatus:
     """
     Look up a page on Wikipedia and see whether it:
 
@@ -158,8 +165,11 @@ def _get_wikipedia_page(title: str) -> WikipediaPageStatus:
     3.  Isn't found
 
     """
+    if wikipedia_host == "en.m.wikipedia.org":
+        wikipedia_host = "en.wikipedia.org"
+
     resp = httpx.get(
-        "https://en.wikipedia.org/w/api.php",
+        f"https://{wikipedia_host}/w/api.php",
         params={
             "action": "query",
             "prop": "revisions",

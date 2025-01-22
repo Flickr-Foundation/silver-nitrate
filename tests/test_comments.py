@@ -83,6 +83,29 @@ class TestFixWikipediaLinks:
         assert fix_comment_text(comment_text) == expected_text
 
     @pytest.mark.vcr()
+    def test_fixes_dutch_wikipedia_links(self) -> None:
+        """
+        If there's a non-English Wikipedia link that has disambiguation parens
+        at the end, that extra text is added to the URL.
+        """
+        # This example comes from Ronald van Ooijen's comment:
+        # https://www.flickr.com/photos/statelibraryofnsw/49868448366/#comment72157714245484787
+        #
+        # Retrieved 22 January 2025
+        comment_text = (
+            "Ship was until 1934 in use and afterwards scrapped.\n"
+            "see for total history\n"
+            '<a href="https://nl.wikipedia.org/wiki/Mauretania_" rel="noreferrer nofollow">nl.wikipedia.org/wiki/Mauretania_</a>(schip,_1907)'
+        )
+        expected_text = (
+            "Ship was until 1934 in use and afterwards scrapped.\n"
+            "see for total history\n"
+            '<a href="https://nl.wikipedia.org/wiki/Mauretania_(schip,_1907)" rel="noreferrer nofollow">nl.wikipedia.org/wiki/Mauretania_(schip,_1907)</a>'
+        )
+
+        assert fix_comment_text(comment_text) == expected_text
+
+    @pytest.mark.vcr()
     def test_skips_correct_link(self) -> None:
         """
         A Wikipedia link that is correct is unchanged.
