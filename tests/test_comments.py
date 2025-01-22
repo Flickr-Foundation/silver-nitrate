@@ -106,6 +106,29 @@ class TestFixWikipediaLinks:
         assert fix_comment_text(comment_text) == expected_text
 
     @pytest.mark.vcr()
+    def test_includes_fragment(self) -> None:
+        """
+        If there's a Wikipedia URL with a fragment, that fragment is added
+        to the URL.
+        """
+        # This example comes from Jesús Roberto Duarte's comment:
+        # https://www.flickr.com/photos/cornelluniversitylibrary/3675113899/#comment72157631107864396
+        #
+        # Retrieved 22 January 2025
+        comment_text = (
+            "In\n"
+            '<a href="http://es.wikipedia.org/wiki/Atoyac_" rel="nofollow">es.wikipedia.org/wiki/Atoyac_</a>(Veracruz)#Toponimia\n'
+            "you'll find its coordinates"
+        )
+        expected_text = (
+            "In\n"
+            '<a href="http://es.wikipedia.org/wiki/Atoyac_(Veracruz)#Toponimia" rel="noreferrer nofollow">es.wikipedia.org/wiki/Atoyac_(Veracruz)#Toponimia</a>\n'
+            "you'll find its coordinates"
+        )
+
+        assert fix_comment_text(comment_text) == expected_text
+
+    @pytest.mark.vcr()
     def test_skips_correct_link(self) -> None:
         """
         A Wikipedia link that is correct is unchanged.

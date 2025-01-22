@@ -110,12 +110,12 @@ def fix_wikipedia_links(comment_text: str) -> str:
         #     https://en.wikipedia.org/wiki/{title}
         #
         # Anything else we should skip.
-        # TODO: Do we need to support non-English Wikipedias?
         url = hyperlink.parse(link["href"])
 
         if url.host not in {
             "en.wikipedia.org",
             "en.m.wikipedia.org",
+            "es.wikipedia.org",
             "nl.wikipedia.org",
         }:
             continue
@@ -123,30 +123,36 @@ def fix_wikipedia_links(comment_text: str) -> str:
         if len(url.path) < 2 or url.path[0] != "wiki":
             continue
 
-        orig_page_title = url.path[1]
+        orig_title = url.path[1]
 
         # If there's a Wikipedia page with this exact title, then the
         # link works and we can leave it as-is.
-        if (
-            _get_wikipedia_page(wikipedia_host=url.host, title=orig_page_title)
-            == "found"
-        ):
+        if _get_wikipedia_page(host=url.host, title=orig_title) == "found":
             continue
 
         # Otherwise, check to see if there's a page with the suffix
         # added -- and if there does, use that as the new link.
-        alt_page_title = orig_page_title + link["suffix"]
+        #
+        # We don't include the fragment when looking up the title of
+        # the page, but we do add it if we're fixing the URL.
+        if "#" in link["suffix"]:
+            suffix, fragment = link["suffix"].split("#")
+            fragment = f"#{fragment}"
+        else:
+            suffix = link["suffix"]
+            fragment = ""
 
-        if (
-            _get_wikipedia_page(wikipedia_host=url.host, title=alt_page_title)
-            == "found"
-        ):
+        alt_title = orig_title + suffix
+
+        if _get_wikipedia_page(host=url.host, title=alt_title) == "found":
+            new_url = f"{url.host}/wiki/{alt_title}{fragment}"
+
             comment_text = comment_text.replace(
                 link["raw_markup"],
                 (
-                    f'<a href="{url.scheme}://{url.host}/wiki/{alt_page_title}" '
+                    f'<a href="{url.scheme}://{new_url}" '
                     'rel="noreferrer nofollow">'
-                    f"{url.host}/wiki/{alt_page_title}</a>"
+                    f"{new_url}</a>"
                 ),
             )
 
@@ -156,7 +162,7 @@ def fix_wikipedia_links(comment_text: str) -> str:
 WikipediaPageStatus = typing.Literal["found", "redirected", "not_found"]
 
 
-def _get_wikipedia_page(wikipedia_host: str, title: str) -> WikipediaPageStatus:
+def _get_wikipedia_page(host: str, title: str) -> WikipediaPageStatus:
     """
     Look up a page on Wikipedia and see whether it:
 
@@ -165,11 +171,11 @@ def _get_wikipedia_page(wikipedia_host: str, title: str) -> WikipediaPageStatus:
     3.  Isn't found
 
     """
-    if wikipedia_host == "en.m.wikipedia.org":
-        wikipedia_host = "en.wikipedia.org"
+    if host == "en.m.wikipedia.org":
+        host = "en.wikipedia.org"
 
     resp = httpx.get(
-        f"https://{wikipedia_host}/w/api.php",
+        f"https://{host}/w/api.php",
         params={
             "action": "query",
             "prop": "revisions",
