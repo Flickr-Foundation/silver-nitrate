@@ -186,3 +186,17 @@ class TestFixWikipediaLinks:
         )
 
         assert fix_comment_text(comment_text) == comment_text
+
+    @pytest.mark.vcr()
+    def test_skips_unrecognised_wikipedia(self) -> None:
+        """
+        A link to a language-specific Wikipedia that doesn't exist
+        is skipped.
+        """
+        comment_text = (
+            "This page doesn’t exist: "
+            '<a href="https://zz.wikipedia.org/wiki/MadeUpPage" '
+            'rel="noreferrer nofollow">zz.wikipedia.org/wiki/MadeUpPage</a>.'
+        )
+
+        assert fix_comment_text(comment_text) == comment_text

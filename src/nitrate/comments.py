@@ -24,7 +24,10 @@ def fix_comment_text(comment_text: str) -> str:
     """
     Fix broken links and other markup issues in comment text.
     """
-    comment_text = fix_wikipedia_links(comment_text)
+    try:
+        comment_text = fix_wikipedia_links(comment_text)
+    except Exception:
+        pass
 
     return comment_text
 
@@ -112,12 +115,16 @@ def fix_wikipedia_links(comment_text: str) -> str:
         # Anything else we should skip.
         url = hyperlink.parse(link["href"])
 
-        if url.host not in {
+        is_english_wikipedia = url.host in {
             "en.wikipedia.org",
             "en.m.wikipedia.org",
-            "es.wikipedia.org",
-            "nl.wikipedia.org",
-        }:
+        }
+
+        # It's easier to write a regex than enumerate all of these.
+        # e.g. de.wikipedia.org, fr.wikipedia.org
+        is_other_wikipedia = re.match(r"^[a-z]{2}\.wikipedia.org$", url.host)
+
+        if not is_english_wikipedia and not is_other_wikipedia:
             continue
 
         if len(url.path) < 2 or url.path[0] != "wiki":
