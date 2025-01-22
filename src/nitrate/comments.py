@@ -53,12 +53,14 @@ def find_links(comment_text: str) -> Iterator[Link]:
     but a Flickr comment isn't a complete HTML document and using
     regex makes it easier to do minimally invasive replacements.
 
+    Note: some older comments omit the ``noreferrer`` attribute.
+
     """
     # This regex is designed to match all <a> tags in the form above,
     # then capture everything after that up to the next bit of whitespace.
     for m in re.finditer(
         r'<a href="(?P<href>[^"]+)" '
-        r'rel="noreferrer nofollow">'
+        r'rel="(?:noreferrer )?nofollow">'
         r"(?P<display_text>[^<]+)"
         r"</a>"
         r"(?P<suffix>[^\s]*)",
@@ -111,7 +113,10 @@ def fix_wikipedia_links(comment_text: str) -> str:
         # TODO: Do we need to support non-English Wikipedias?
         url = hyperlink.parse(link["href"])
 
-        if url.host != "en.wikipedia.org":
+        if url.host not in {
+            "en.wikipedia.org",
+            "en.m.wikipedia.org",
+        }:
             continue
 
         if len(url.path) < 2 or url.path[0] != "wiki":
@@ -132,9 +137,9 @@ def fix_wikipedia_links(comment_text: str) -> str:
             comment_text = comment_text.replace(
                 link["raw_markup"],
                 (
-                    f'<a href="https://en.wikipedia.org/wiki/{alt_page_title}" '
+                    f'<a href="{url.scheme}://{url.host}/wiki/{alt_page_title}" '
                     'rel="noreferrer nofollow">'
-                    f"en.wikipedia.org/wiki/{alt_page_title}</a>"
+                    f"{url.host}/wiki/{alt_page_title}</a>"
                 ),
             )
 

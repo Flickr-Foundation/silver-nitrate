@@ -64,6 +64,25 @@ class TestFixWikipediaLinks:
         assert fix_comment_text(comment_text) == expected_text
 
     @pytest.mark.vcr()
+    def test_fixes_mobile_wikipedia_links(self) -> None:
+        """
+        If there's a mobile Wikipedia link that has disambiguation parens
+        at the end, that extra text is added to the URL.
+        """
+        # This example comes from Barbara Agnew's comment here:
+        # https://www.flickr.com/photos/royalaustralianhistoricalsociety/12643854003/#comment72157643236765583
+        #
+        # Retrieved 22 January 2025
+        #
+        # Note: we need to preserve both the original scheme (http://)
+        # and hostname (en.m.wikipedia.org) because we don't want to
+        # be doing any rewriting of people's comments.
+        comment_text = '<a href="http://en.m.wikipedia.org/wiki/Black_Thursday_" rel="nofollow">en.m.wikipedia.org/wiki/Black_Thursday_</a>(1851)'
+        expected_text = '<a href="http://en.m.wikipedia.org/wiki/Black_Thursday_(1851)" rel="noreferrer nofollow">en.m.wikipedia.org/wiki/Black_Thursday_(1851)</a>'
+
+        assert fix_comment_text(comment_text) == expected_text
+
+    @pytest.mark.vcr()
     def test_skips_correct_link(self) -> None:
         """
         A Wikipedia link that is correct is unchanged.
