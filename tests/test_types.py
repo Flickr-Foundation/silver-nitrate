@@ -3,7 +3,7 @@ Tests for ``nitrate.types``.
 """
 
 import datetime
-import pathlib
+from pathlib import Path
 import typing
 
 import pytest
@@ -50,7 +50,7 @@ def test_validate_type_supports_builtin_types() -> None:
     validate_type([1, 2, 3], model=list[int])
 
 
-def test_read_typed_json_allows_valid_data(tmp_path: pathlib.Path) -> None:
+def test_read_typed_json_allows_valid_data(tmp_path: Path) -> None:
     """
     If you read a JSON file which matches the model with ``read_typed_json``,
     it returns the data.
@@ -63,7 +63,7 @@ def test_read_typed_json_allows_valid_data(tmp_path: pathlib.Path) -> None:
     assert read_typed_json(json_path, model=list[int]) == [1, 2, 3]
 
 
-def test_read_typed_json_flags_invalid_data(tmp_path: pathlib.Path) -> None:
+def test_read_typed_json_flags_invalid_data(tmp_path: Path) -> None:
     """
     If you read a JSON file which doesn't match the model with
     ``read_typed_json``, it throws a ``ValidationError``.
@@ -77,7 +77,7 @@ def test_read_typed_json_flags_invalid_data(tmp_path: pathlib.Path) -> None:
         read_typed_json(json_path, model=dict[str, str])
 
 
-def test_read_typed_json_uses_decoder(tmp_path: pathlib.Path) -> None:
+def test_read_typed_json_uses_decoder(tmp_path: Path) -> None:
     """
     If you pass a custom decoder to ``read_typed_json``, it will use that
     to decode the JSON before validating it against the model.
