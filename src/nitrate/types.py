@@ -4,7 +4,7 @@ Some helper methods for writing type-safe Python.
 
 import functools
 import json
-import pathlib
+from pathlib import Path
 import typing
 
 from pydantic import ConfigDict, TypeAdapter
@@ -51,7 +51,7 @@ def validate_type(t: typing.Any, *, model: type[T]) -> T:
 
 
 def read_typed_json(
-    path: pathlib.Path | str,
+    path: Path | str,
     *,
     model: type[T],
     cls: type[json.JSONDecoder] | None = None,
