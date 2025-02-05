@@ -7,10 +7,10 @@ distributed as one library.
 
 You should always import individual files, e.g.
 
-    from nitrate.json import DatetimeDecoder
+    from nitrate.json import NitrateDecoder
 
 This file only exists to make Python's package management tools happy,
 and to hold the version number.
 """
 
-__version__ = "1.3.0"
+__version__ = "1.4.0"

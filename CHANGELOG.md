@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.4.0 - 2025-02-05
+
+This replaces `nitrate.json.DatetimeEncoder` with `nitrate.json.NitrateEncoder` (and similar for `Decoder`).
+
+This new encoder/decoder pair is backwards-compatible with JSON written by previous versions of silver-nitrate, but now can decode/encode more types:
+
+-   `datetime.datetime`
+-   `datetime.date`
+-   `pathlib.Path`
+
 ## v1.3.0 - 2025-01-22
 
 Change `nitrate.comments` to provide a more generic function `fix_comment_text`.
