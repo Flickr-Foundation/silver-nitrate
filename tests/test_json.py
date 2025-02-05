@@ -21,6 +21,7 @@ from nitrate.json import NitrateDecoder, NitrateEncoder
         ["1", "2", "3"],
         {"sides": 5, "color": "red"},
         datetime.datetime(2001, 2, 3, 4, 5, 6),
+        datetime.date(2001, 2, 3),
     ],
 )
 def test_can_json_round_trip(value: typing.Any) -> None:
