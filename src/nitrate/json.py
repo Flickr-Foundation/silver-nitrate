@@ -13,20 +13,16 @@ import typing
 
 T = typing.TypeVar("T")
 
-EncodedDate = typing.TypedDict(
-    "EncodedDate", {"type": typing.Literal["datetime.datetime"], "value": str}
-)
 
-
-class DatetimeEncoder(json.JSONEncoder):
+class NitrateEncoder(json.JSONEncoder):
     """
-    A custom JSON encoder that supports datetimes.
+    A custom JSON encoder that supports datetimes and paths.
 
         >>> t = datetime.datetime(2001, 2, 3, 4, 5, 6)
-        >>> json.dumps({"t": t}, cls=DatetimeEncoder)
+        >>> json.dumps({"t": t}, cls=NitrateEncoder)
         '{"t": {"type": "datetime.datetime", "value": "2001-02-03T04:05:06"}}'
 
-    This is meant to be used with ``DatetimeDecoder`` -- together, they
+    This is meant to be used with ``NitrateDecoder`` -- together, they
     allow you to serialise a datetime value via JSON and preserve its type.
 
     """
@@ -41,14 +37,14 @@ class DatetimeEncoder(json.JSONEncoder):
             return super().default(t)
 
 
-class DatetimeDecoder(json.JSONDecoder):
+class NitrateDecoder(json.JSONDecoder):
     """
     A custom JSON decoder that supports the datetimes encoded
-    by DatetimeEncoder.
+    by NitrateEncoder.
 
         >>> json.loads(
         ...     '{"t": {"type": "datetime.datetime", "value": "2001-02-03T04:05:06"}}',
-        ...     cls=DatetimeDecoder)
+        ...     cls=NitrateDecoder)
         {'t': datetime.datetime(2001, 2, 3, 4, 5, 6)}
 
     """
@@ -74,4 +70,4 @@ class DatetimeDecoder(json.JSONDecoder):
             return d
 
 
-__all__ = ["DatetimeEncoder", "DatetimeDecoder"]
+__all__ = ["NitrateEncoder", "NitrateDecoder"]
