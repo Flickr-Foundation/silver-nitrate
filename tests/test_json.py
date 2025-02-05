@@ -4,6 +4,7 @@ Tests for ``nitrate.json``.
 
 import datetime
 import json
+import pathlib
 import typing
 import uuid
 
@@ -22,6 +23,7 @@ from nitrate.json import NitrateDecoder, NitrateEncoder
         {"sides": 5, "color": "red"},
         datetime.datetime(2001, 2, 3, 4, 5, 6),
         datetime.date(2001, 2, 3),
+        pathlib.Path("x/y/z"),
     ],
 )
 def test_can_json_round_trip(value: typing.Any) -> None:
@@ -46,6 +48,10 @@ def test_can_json_round_trip(value: typing.Any) -> None:
             '{"type": "datetime.date", "value": "2001-02-03"}',
             datetime.date(2001, 2, 3),
         ),
+        (
+            '{"type": "pathlib.Path", "value": "x/y/z"}',
+            pathlib.Path("x/y/z"),
+        ),
     ],
 )
 def test_can_decode_json(json_string: str, value: typing.Any) -> None:
@@ -59,7 +65,7 @@ def test_can_decode_json(json_string: str, value: typing.Any) -> None:
     assert json.loads(json_string, cls=NitrateDecoder) == value
 
 
-def test_an_unrecognised_type_still_fails() -> None:
+def test_encoding_an_unrecognised_type_still_fails() -> None:
     """
     Trying to encode an unrecognised type will fail, even if you use
     ``NitrateEncoder``.
@@ -72,3 +78,30 @@ def test_an_unrecognised_type_still_fails() -> None:
 
     with pytest.raises(TypeError, match="Object of type UUID is not JSON serializable"):
         json.dumps({"id": uuid.uuid4()}, cls=NitrateEncoder)
+
+
+@pytest.mark.parametrize(
+    ["json_string", "value"],
+    [
+        (
+            '{"type": "datetime.date", "string": "2001-01-01"}',
+            {"type": "datetime.date", "string": "2001-01-01"},
+        ),
+        (
+            '{"type": "datetime.date", "value": "2001-01-01", "day": "monday"}',
+            {"type": "datetime.date", "value": "2001-01-01", "day": "monday"},
+        ),
+        (
+            '{"type": "Currency", "value": "£123.45"}',
+            {"type": "Currency", "value": "£123.45"},
+        ),
+    ],
+)
+def test_decoding_an_unrecognised_type_is_okay(
+    json_string: str, value: typing.Any
+) -> None:
+    """
+    Trying to decode a JSON object which includes a ``type`` key will
+    leave it as-is, if it doesn't look like it was encoded by nitrate.
+    """
+    assert json.loads(json_string, cls=NitrateDecoder) == value

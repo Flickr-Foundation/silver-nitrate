@@ -8,6 +8,7 @@ Python objects, not just strings.
 
 import datetime
 import json
+import pathlib
 import typing
 
 
@@ -35,6 +36,8 @@ class NitrateEncoder(json.JSONEncoder):
             return {"type": "datetime.datetime", "value": t.isoformat()}
         elif isinstance(t, datetime.date):
             return {"type": "datetime.date", "value": t.isoformat()}
+        elif isinstance(t, pathlib.Path):
+            return {"type": "pathlib.Path", "value": str(t)}
         else:
             return super().default(t)
 
@@ -64,12 +67,15 @@ class NitrateDecoder(json.JSONDecoder):
         """
         Convert a JSON value to a Python-native value.
         """
-        if d.get("type") == "datetime.datetime":
-            return datetime.datetime.fromisoformat(d["value"])
-        elif d.get("type") == "datetime.date":
-            return datetime.datetime.fromisoformat(d["value"]).date()
-        else:
-            return d
+        if d.keys() == {"type", "value"}:
+            if d.get("type") == "datetime.datetime":
+                return datetime.datetime.fromisoformat(d["value"])
+            elif d.get("type") == "datetime.date":
+                return datetime.datetime.fromisoformat(d["value"]).date()
+            elif d.get("type") == "pathlib.Path":
+                return pathlib.Path(d["value"])
+
+        return d
 
 
 __all__ = ["NitrateEncoder", "NitrateDecoder"]
