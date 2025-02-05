@@ -9,7 +9,7 @@ import typing
 import pytest
 from pydantic import ValidationError
 
-from nitrate.json import DatetimeDecoder
+from nitrate.json import NitrateDecoder
 from nitrate.types import read_typed_json, validate_type
 
 
@@ -97,7 +97,7 @@ def test_read_typed_json_uses_decoder(tmp_path: Path) -> None:
     }
 
     actual = read_typed_json(
-        json_path, model=dict[str, datetime.datetime], cls=DatetimeDecoder
+        json_path, model=dict[str, datetime.datetime], cls=NitrateDecoder
     )
 
     assert actual == expected
