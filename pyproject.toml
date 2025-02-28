@@ -26,7 +26,7 @@ dependencies = []
 dynamic = ["version"]
 
 [project.optional-dependencies]
-cassettes = ["pytest", "vcrpy"]
+cassettes = ["pytest", "pytest-vcr"]
 comments = ["httpx", "hyperlink"]
 json = []
 passwords = ["keyring"]
