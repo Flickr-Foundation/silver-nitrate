@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v1.6.0 - 2025-02-28
+
+This releases adds `nitrate.flickr_login`, which has a `FlickrLoginManager` class that can be used to handle part of the Flickr login process.
+
+This is to reduce the amount of login-related code we need to share between our different apps.
+It doesn't remove it completely, but the code that actually talks to Flickr now lives in this library.
+
+This will likely be refined as we work out what the right amount of code to share/reuse is.
+
 ## v1.5.0 - 2025-02-28
 
 This release includes packaging extras, so you can declare the specific parts of `silver-nitrate` that you want, and it will include their dependencies.
