@@ -25,6 +25,14 @@ requires-python = ">=3.12"
 dependencies = []
 dynamic = ["version"]
 
+[project.optional-dependencies]
+cassettes = ["pytest", "vcrpy"]
+comments = ["httpx", "hyperlink"]
+json = []
+passwords = ["keyring"]
+types = ["pydantic"]
+xml = []
+
 [project.urls]
 "Homepage" = "https://github.com/Flickr-Foundation/silver-nitrate"
 "Changelog" = "https://github.com/Flickr-Foundation/silver-nitrate/blob/main/CHANGELOG.md"

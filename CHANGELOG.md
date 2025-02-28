@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.5.0 - 2025-02-28
+
+This release includes packaging extras, so you can declare the specific parts of `silver-nitrate` that you want, and it will include their dependencies.
+
+For example, you could install `silver-nitrate[types]`, and that will install Pydantic, rather than you having to specify Pydantic as a separate dependency.
+
 ## v1.4.0 - 2025-02-05
 
 This replaces `nitrate.json.DatetimeEncoder` with `nitrate.json.NitrateEncoder` (and similar for `Decoder`).
