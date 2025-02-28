@@ -1,4 +1,4 @@
--e file:.[cassettes,comments,json,passwords,types,xml]
+-e file:.[cassettes,comments,json,login,passwords,types,xml]
 
 build
 interrogate
@@ -6,3 +6,5 @@ mypy
 pytest-cov
 ruff
 twine
+
+types-Authlib
