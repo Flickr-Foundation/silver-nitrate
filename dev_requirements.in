@@ -1,15 +1,8 @@
--e file:.
+-e file:.[cassettes, comments, json, passwords, types, xml]
 
 build
-httpx
-hyperlink
 interrogate
 mypy
 pytest-cov
-pytest-vcr
 ruff
 twine
-
-keyring
-pydantic
-vcrpy
