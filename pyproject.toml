@@ -25,6 +25,14 @@ requires-python = ">=3.12"
 dependencies = []
 dynamic = ["version"]
 
+[project.optional-dependencies]
+cassettes = ["pytest", "vcrpy"]
+comments = ["httpx", "hyperlink"]
+json = []
+passwords = ["keyring"]
+types = ["pydantic"]
+xml = []
+
 [project.urls]
 "Homepage" = "https://github.com/Flickr-Foundation/silver-nitrate"
 "Changelog" = "https://github.com/Flickr-Foundation/silver-nitrate/blob/main/CHANGELOG.md"
@@ -40,10 +48,7 @@ nitrate = ["py.typed"]
 
 [tool.coverage.run]
 branch = true
-source = [
-  "nitrate",
-  "tests",
-]
+source = ["nitrate", "tests"]
 
 [tool.coverage.report]
 show_missing = true
@@ -51,9 +56,7 @@ skip_covered = true
 fail_under = 100
 
 [tool.pytest.ini_options]
-filterwarnings = [
-  "error",
-]
+filterwarnings = ["error"]
 
 [tool.mypy]
 mypy_path = "src"
