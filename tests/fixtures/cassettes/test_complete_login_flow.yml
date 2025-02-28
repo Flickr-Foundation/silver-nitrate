@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      content-length:
+      - '0'
+      host:
+      - www.flickr.com
+      user-agent:
+      - python-httpx/0.28.1
+    method: POST
+    uri: https://www.flickr.com/services/oauth/request_token?oauth_callback=http%3A%2F%2Flocalhost%2Fcallback&oauth_consumer_key=OAUTH_CONSUMER_KEY&oauth_consumer_key=OAUTH_CONSUMER_KEY&oauth_nonce=OAUTH_NONCE&oauth_nonce=OAUTH_NONCE&oauth_signature=OAUTH_SIGNATURE&oauth_signature_method=HMAC-SHA1&oauth_signature_method=HMAC-SHA1&oauth_timestamp=OAUTH_TIMESTAMP&oauth_timestamp=OAUTH_TIMESTAMP&oauth_version=1.0&oauth_version=1.0
+  response:
+    body:
+      string: oauth_callback_confirmed=true&oauth_token=REQUEST_TOKEN&oauth_token_secret=REQUEST_TOKEN_SECRET
+    headers:
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Fri, 28 Feb 2025 15:01:37 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      host:
+      - www.flickr.com
+      user-agent:
+      - python-httpx/0.28.1
+    method: POST
+    uri: https://www.flickr.com/services/oauth/access_token
+  response:
+    body:
+      string: fullname=Alex%20Chan&oauth_token=ACCESS_TOKEN&oauth_token_secret=ACCESS_TOKEN_SECRET&user_nsid=199258389%40N04&username=alexwlchan
+    headers:
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Fri, 28 Feb 2025 15:01:56 GMT
+    status:
+      code: 200
+      message: OK
+version: 1
