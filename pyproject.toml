@@ -40,10 +40,7 @@ nitrate = ["py.typed"]
 
 [tool.coverage.run]
 branch = true
-source = [
-  "nitrate",
-  "tests",
-]
+source = ["nitrate", "tests"]
 
 [tool.coverage.report]
 show_missing = true
@@ -51,9 +48,7 @@ skip_covered = true
 fail_under = 100
 
 [tool.pytest.ini_options]
-filterwarnings = [
-  "error",
-]
+filterwarnings = ["error"]
 
 [tool.mypy]
 mypy_path = "src"
