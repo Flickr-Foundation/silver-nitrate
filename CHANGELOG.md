@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.6.1 - 2025-03-03
+
+Tidy up the new `FlickrLoginManager.handle_callback` API, which was taking a `login_destination` parameter that it didn't need.
+
 ## v1.6.0 - 2025-02-28
 
 This releases adds `nitrate.flickr_login`, which has a `FlickrLoginManager` class that can be used to handle part of the Flickr login process.

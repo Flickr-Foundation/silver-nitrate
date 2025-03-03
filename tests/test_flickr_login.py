@@ -89,19 +89,15 @@ def test_complete_login_flow(
     }
     # assert 0
 
-    callback_resp = login_manager.handle_callback(
-        callback_url="http://localhost/callback?oauth_token=OAUTH_TOKEN&oauth_verifier=OAUTH_VERIFIER",
+    access_token = login_manager.get_access_token(
+        authorization_resp_url="http://localhost/callback?oauth_token=OAUTH_TOKEN&oauth_verifier=OAUTH_VERIFIER",
         request_token=authorize_resp["request_token"],
-        login_destination="/dashboard",
     )
 
-    assert callback_resp == {
-        "access_token": {
-            "fullname": "Alex Chan",
-            "oauth_token": "ACCESS_TOKEN",
-            "oauth_token_secret": "ACCESS_TOKEN_SECRET",
-            "user_nsid": "199258389@N04",
-            "username": "alexwlchan",
-        },
-        "login_destination": "/dashboard",
+    assert access_token == {
+        "fullname": "Alex Chan",
+        "oauth_token": "ACCESS_TOKEN",
+        "oauth_token_secret": "ACCESS_TOKEN_SECRET",
+        "user_nsid": "199258389@N04",
+        "username": "alexwlchan",
     }

@@ -85,9 +85,9 @@ class FlickrLoginManager:
             "authorization_url": authorization_url,
         }
 
-    def handle_callback(
-        self, callback_url: str, request_token: "RequestToken", login_destination: str
-    ) -> "CallbackResponse":
+    def get_access_token(
+        self, authorization_resp_url: str, request_token: "RequestToken"
+    ) -> "AccessToken":
         """
         Handle the authorization callback from Flickr.
 
@@ -99,9 +99,7 @@ class FlickrLoginManager:
         We can use these tokens to get an access token for the user which
         can make Flickr API requests on their behalf.
 
-        This returns an access token you can use to log in the user,
-        and a URL where they should be redirected once they're logged
-        in with Flask-Login.
+        This returns an access token you can use to log in the user.
         """
         # Create an OAuth1Client with the Flickr API key and secret.
         #
@@ -116,7 +114,7 @@ class FlickrLoginManager:
 
         # Parse the authorization response from Flickr -- that is, extract
         # the OAuth query parameters from the URL, and add them to the client.
-        oauth_client.parse_authorization_response(callback_url)
+        oauth_client.parse_authorization_response(authorization_resp_url)
 
         # Step 3: Exchanging the Request Token for an Access Token
         #
@@ -133,10 +131,7 @@ class FlickrLoginManager:
             url="https://www.flickr.com/services/oauth/access_token"
         )
 
-        return {
-            "access_token": validate_type(access_token, model=AccessToken),
-            "login_destination": login_destination,
-        }
+        return validate_type(access_token, model=AccessToken)
 
 
 class RequestToken(typing.TypedDict):
@@ -174,15 +169,3 @@ class AccessToken(typing.TypedDict):
     oauth_token_secret: str
     user_nsid: str
     username: str
-
-
-class CallbackResponse(typing.TypedDict):
-    """
-    A response to the callback from Flickr.com.
-
-    This includes information about the newly-logged in user, and a URL
-    where they should be redirected afterward.
-    """
-
-    access_token: AccessToken
-    login_destination: str
