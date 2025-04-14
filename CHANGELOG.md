@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v1.6.2 - 2025-04-14
+
+Fix a bug in the validation of `typing.Union[A, B]` where both types are a `TypedDict`.
+
+The validation is stricter, and will require an exact match to either `A` or `B` -- previously it was possible for data to validate that was only a "partial" match, and this could cause data to be lost.
+This was only possible in cases where the fields of `A` were a strict subset of the fields of `B`, and you passed a value which used more fields than `A` but less than `B`.
+
+For example, consider the following type:
+
+```python
+BasicShape = typing.TypedDict("Shape", {"sides": int, })
+NamedShape = typing.TypedDict("Shape", {"sides": int, "colour": str, "name": str })
+
+Shape = BasicShape | NamedShape
+```
+
+if you passed the data:
+
+```python
+{"sides": "5", "colour": "red"};
+```
+
+this isn't a strict match for `BasicShape` or `NamedShape`, but would be incorrectly validated and returned as `{'sides': 5}`.
+
+Now this throws a `pydantic.ValidationError`.
+
 ## v1.6.1 - 2025-03-03
 
 Tidy up the new `FlickrLoginManager.handle_callback` API, which was taking a `login_destination` parameter that it didn't need.

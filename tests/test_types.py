@@ -14,6 +14,7 @@ from nitrate.types import read_typed_json, validate_type
 
 
 Shape = typing.TypedDict("Shape", {"color": str, "sides": int})
+Circle = typing.TypedDict("Circle", {"color": str, "radius": int})
 
 
 @pytest.mark.parametrize(
@@ -43,11 +44,58 @@ def test_validate_type_allows_valid_data() -> None:
     validate_type({"color": "red", "sides": 4}, model=Shape)
 
 
-def test_validate_type_supports_builtin_types() -> None:
+def test_validate_type_supports_builtin_list() -> None:
     """
-    You can validate builtin types with ``validate_type``.
+    You can validate a list with ``validate_type``.
     """
     validate_type([1, 2, 3], model=list[int])
+
+
+def test_validate_type_supports_builtin_type() -> None:
+    """
+    You can validate a list with ``validate_type``.
+    """
+    validate_type(1, model=int)
+
+
+@pytest.mark.parametrize(
+    "data", [{"color": "red", "sides": 4}, {"color": "blue", "radius": 3}]
+)
+def test_validate_type_supports_union_type(data: typing.Any) -> None:
+    """
+    You can validate a type which is a union of two TypedDict's.
+    """
+    validate_type(data, model=Shape | Circle)  # type: ignore
+
+
+@pytest.mark.parametrize(
+    "data",
+    [
+        {"color": "red", "sides": 4, "name": "square"},
+        {"color": "red", "sides": 4, "stroke": "black", "depth": 3},
+    ],
+)
+def test_validate_type_rejects_extra_fields(data: typing.Any) -> None:
+    """
+    Adding extra keys to a TypedDict is a validation error.
+    """
+    with pytest.raises(ValidationError):
+        validate_type(data, model=Shape)
+
+
+@pytest.mark.parametrize(
+    "data",
+    [
+        {"color": "red", "sides": 4, "name": "square"},
+        {"color": "red", "sides": 4, "stroke": "black", "depth": 3},
+    ],
+)
+def test_validate_type_of_union_rejects_extra_fields(data: typing.Any) -> None:
+    """
+    Adding extra keys to a Union of TypedDict's is a validation error.
+    """
+    with pytest.raises(ValidationError):
+        validate_type(data, model=Shape | Circle)  # type: ignore
 
 
 def test_read_typed_json_allows_valid_data(tmp_path: Path) -> None:
