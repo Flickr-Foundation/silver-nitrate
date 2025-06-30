@@ -1,10 +1,15 @@
 """
-Use cassettes for testing HTTP APIs with VCR.py [1]
+pytest fixtures for working with vcrpy to record HTTP requests.
+
+This allows us to record HTTP interactions as YAML files, so they can
+be "played back" later -- e.g. in automated tests or GitHub Actions.
+This means our tests are working with real responses, but don't
+depend on the original service being up and running.
 
 This establishes a couple of conventions for where cassettes are stored
 and how they're named.
 
-[1]: https://vcrpy.readthedocs.io/
+See https://vcrpy.readthedocs.io/
 """
 
 from collections.abc import Iterator
@@ -12,6 +17,9 @@ from collections.abc import Iterator
 import pytest
 import vcr
 from vcr.cassette import Cassette
+
+
+__all__ = ["cassette_name", "vcr_cassette"]
 
 
 def get_cassette_name(request: pytest.FixtureRequest) -> str:
@@ -42,18 +50,18 @@ def get_cassette_name(request: pytest.FixtureRequest) -> str:
         return f"{name}.yml"
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def cassette_name(request: pytest.FixtureRequest) -> str:
     """
     Returns the filename of a VCR cassette to use in tests.
 
     This is useful when you need some custom vcr.py options, and
-    can't use the prebuilt ``vcr_cassette`` fixture.
+    can't use the prebuilt `vcr_cassette` fixture.
     """
     return get_cassette_name(request)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def vcr_cassette(cassette_name: str) -> Iterator[Cassette]:
     """
     Creates a VCR cassette for use in tests.
@@ -68,6 +76,3 @@ def vcr_cassette(cassette_name: str) -> Iterator[Cassette]:
         decode_compressed_response=True,
     ) as cassette:
         yield cassette
-
-
-__all__ = ["cassette_name", "vcr_cassette"]
