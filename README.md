@@ -19,9 +19,20 @@ If you want to use it, copy/paste the code (and the associated tests!) into your
   </figcaption>
 </figure>
 
-## What's in a name?
+## What's in this library?
 
-I wanted to pick a name that was:
+This library contains shared functions that are a bit too complicated to copy/paste between different projects.
+
+*   `nitrate.cassettes` -- pytest fixtures for working with vcrpy to record HTTP requests.
+*   `nitrate.flickr_login` -- deal with the parts of the Flickr OAuth login process that are the same for every app.
+*   `nitrate.json` -- encode/decode JSON in a type-preserving way.
+*   `nitrate.passwords` -- helpers for dealing with passwords.
+*   `nitrate.types` -- helpers for validating Python types at runtime.
+*   `nitrate.xml` -- type-safe helpers for finding matching elements or text in an XML document.
+
+## Why did you pick this name?
+
+We wanted to pick a name that was:
 
 1.  More interesting than "utils"
 2.  Had a connection to photography
@@ -33,7 +44,7 @@ Photographers would coat glass plates with a mixture of chemicals, including sil
 Because silver nitrate reacts when exposed to light, when you put the plate in a camera and open the shutter, different areas would react differently to create an image on the plate.
 You could then develop this plate into a photograph.
 
-This code is key to our work at the Flickr Foundation, so I thought it was a fitting name.
+This code is key to our work at the Flickr Foundation, so it's a fitting name.
 
 ## Development
 

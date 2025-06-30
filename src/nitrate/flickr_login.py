@@ -1,5 +1,6 @@
 """
-This file has some common code for dealing with Flickr Login.
+Code for dealing with parts of the Flickr OAuth login process that are
+the same for every app.
 
 It's meant to be used in the context of a Flask app, and allows some
 of the more complicated bits of the Flickr-Login code to be shared
@@ -11,6 +12,9 @@ import typing
 from authlib.integrations.httpx_client import OAuth1Client
 
 from .types import validate_type
+
+
+__all__ = ["FlickrLoginManager", "RequestToken", "AuthorizationResponse", "AccessToken"]
 
 
 class FlickrLoginManager:
