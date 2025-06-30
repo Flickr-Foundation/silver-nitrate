@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.7.0 - 2025-06-30
+
+Remove `nitrate.comments`, which was only ever used in one project, and inline it back into that project.
+
 ## v1.6.2 - 2025-04-14
 
 Fix a bug in the validation of `typing.Union[A, B]` where both types are a `TypedDict`.
