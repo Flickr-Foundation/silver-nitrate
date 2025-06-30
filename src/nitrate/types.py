@@ -1,5 +1,24 @@
 """
-Some helper methods for writing type-safe Python.
+Helpers for validating Python types at runtime.
+
+We use a lot of `typing.TypedDict` types to define data structures we're
+passing around in our apps, then use the type checker to make sure
+we're using them correctly.
+
+The type checker allows us to do static analysis of our code (does this
+function return a dict with the right fields?) but it can't check
+values received at runtime.  For example, if we read a JSON file from
+disk, how do we know it contains data in the right format?
+
+The two functions in this file do this validation for us:
+
+*   `validate_type(value, model=MyCustomType)` checks a Python value,
+    and throws a `pydantic.ValidationError` if it doesn't match the type
+
+*   `read_typed_json(path, model=MyCustomType)` reads a value from
+    a JSON file, and throws a `pydantic.ValidationError` if it doesn't
+    match the type
+
 """
 
 import functools
@@ -8,6 +27,9 @@ from pathlib import Path
 import typing
 
 from pydantic import ConfigDict, PydanticUserError, TypeAdapter
+
+
+__all__ = ["validate_type", "read_typed_json"]
 
 
 T = typing.TypeVar("T")
@@ -92,6 +114,3 @@ def read_typed_json(
         t = json.load(in_file, cls=cls)
 
     return validate_type(t, model=model)
-
-
-__all__ = ["validate_type", "read_typed_json"]
