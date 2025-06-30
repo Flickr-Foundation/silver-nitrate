@@ -1,15 +1,26 @@
 """
-Allow encoding/decoding JSON in a type-preserving way.
+Encode/decode JSON in a type-preserving way.
 
-In particular, these classes allow us to store Python-native values
-like datetime, date, and Path in JSON and retrieve them as nicely typed
-Python objects, not just strings.
+Our projects use some Python-native types like `datetime`, `date` and `Path`
+that don't slot neatly into JSON -- you can store them as strings, but
+how do you know you need to convert them back again later?
+
+Our custom encoder/decoder pair store these values as JSON objects with
+a `type` key, for example:
+
+    {"type": "datetime.datetime", "value": "2001-02-03T04:05:06"}
+
+This means the intent is clear if you're reading the JSON, but we get
+all the nice Python types at both ends.
 """
 
 import datetime
 import json
 import pathlib
 import typing
+
+
+__all__ = ["NitrateEncoder", "NitrateDecoder"]
 
 
 T = typing.TypeVar("T")
@@ -44,8 +55,8 @@ class NitrateEncoder(json.JSONEncoder):
 
 class NitrateDecoder(json.JSONDecoder):
     """
-    A custom JSON decoder that supports the datetimes encoded
-    by NitrateEncoder.
+    A custom JSON decoder that supports the values encoded by
+    NitrateEncoder.
 
         >>> json.loads(
         ...     '{"t": {"type": "datetime.datetime", "value": "2001-02-03T04:05:06"}}',
@@ -76,6 +87,3 @@ class NitrateDecoder(json.JSONDecoder):
                 return pathlib.Path(d["value"])
 
         return d
-
-
-__all__ = ["NitrateEncoder", "NitrateDecoder"]
