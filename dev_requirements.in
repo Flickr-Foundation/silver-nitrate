@@ -1,4 +1,4 @@
--e file:.[cassettes,comments,json,login,passwords,types,xml]
+-e file:.[cassettes,json,login,passwords,types,xml]
 
 build
 interrogate

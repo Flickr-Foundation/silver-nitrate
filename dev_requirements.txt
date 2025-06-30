@@ -39,15 +39,12 @@ httpcore==1.0.7
     # via httpx
 httpx==0.28.1
     # via silver-nitrate
-hyperlink==21.0.0
-    # via silver-nitrate
 id==1.5.0
     # via twine
 idna==3.10
     # via
     #   anyio
     #   httpx
-    #   hyperlink
     #   requests
     #   yarl
 iniconfig==2.1.0

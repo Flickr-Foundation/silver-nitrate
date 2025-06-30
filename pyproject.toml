@@ -27,7 +27,6 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 cassettes = ["pytest", "pytest-vcr"]
-comments = ["httpx", "hyperlink"]
 json = []
 login = ["authlib", "httpx", "silver-nitrate[types]"]
 passwords = ["keyring"]
