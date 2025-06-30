@@ -1,30 +1,57 @@
 """
-Some utilities for working with XML in a type-safe way.
+Type-safe helpers for finding matching elements/text in an XML document.
+
+== Why do we need this? ==
+
+We use this when we're parsing responses from the Flickr API, and
+there are certain elements we know should always be present in responses.
+
+e.g. responses from the flickr.photos.getInfo API should always have
+a <title> element, so we could write:
+
+    title = photo_elem.find(".//title")
+
+The type checker thinks this is `Element | None` -- it doesn't know that
+the <title> element should always be present.
+
+*   If the API is working correctly and includes <title>, then we have
+    to add lots of `assert X is not None` calls around our codebase
+    to satisfy the type checker.
+*   If the API is working incorrectly and omits <title>, then we get
+    a potentially confusing TypeError when we try to do something with
+    a value which is unexpectedly None.
+
+Here's how you use this file:
+
+    from nitrate.xml import find_required_elem
+
+    title = find_required_elem(photo_elem, path=".//title")
+
+Our type-safe helpers solve both these problems:
+
+*   If the API is working correctly and includes <title>, then this
+    function returns an `ET.Element` and the type checker is happy
+    for us to use it as a defined value.
+*   If the API is working incorrectly and omits <title>, then this
+    function throws a meaningful error message immediately, rather than
+    allowing an unexpected None value to propagate.
+
 """
 
 import xml.etree.ElementTree as ET
+
+
+__all__ = [
+    "find_required_elem",
+    "find_required_text",
+    "find_optional_text",
+]
 
 
 def find_required_elem(elem: ET.Element, *, path: str) -> ET.Element:
     """
     Find the first subelement matching ``path``, or throw if absent.
     """
-    # We use this when we're parsing responses from the Flickr API, and
-    # there are certain elements we know should always be present in responses.
-    #
-    # e.g. we know that photos always have a <title>, so we could write:
-    #
-    #     photo_elem.find(".//title")
-    #
-    # But the type checker only knows that ``find()`` returns Optional[Element] --
-    # it doesn't know that this path should always be present in the response.
-    #
-    # If we call it from this function instead:
-    #
-    #     find_required(photo_elem, path=".//title")
-    #
-    # Then the type checker can see that it returns a well-defined Element,
-    # and it's happy for us to use it without checking in the rest of the code.
     matching_elem = elem.find(path=path)
 
     if matching_elem is None:
@@ -36,23 +63,24 @@ def find_required_elem(elem: ET.Element, *, path: str) -> ET.Element:
 def find_required_text(elem: ET.Element, *, path: str) -> str:
     """
     Find the text of the first element matching ``path``, or throw if absent.
+
+    Here "text" means the inner text of an element.
+
+    Consider this example:
+
+        <photo>
+            <id>123456789</id>
+            <title></title>
+        </photo>
+
+    If we looked up the text in `.//id`, the function returns `123456789`.
+
+    If we looked up the text in `.//title`, the function throws a `ValueError`
+    because that element doesn't have any text.
+
+    If we looked up the text in `.//description`, the function throws
+    a `ValueError` because that element doesn't exist.
     """
-    # We use this when we're parsing responses from the Flickr API, and
-    # there are certain elements we know should always be present and have text.
-    #
-    # e.g. we know that users always have a <id> with some text, so we could write:
-    #
-    #     user_elem.find(".//id")
-    #
-    # But the type checker only knows that ``find()`` returns Optional[Element] --
-    # it doesn't know that this path should always be present in the response.
-    #
-    # If we call it from this function instead:
-    #
-    #     find_required_text(user_elem, path=".//id")
-    #
-    # Then the type checker can see that it returns a well-defined Element,
-    # and it's happy for us to use it without checking in the rest of the code.
     matching_elem = find_required_elem(elem, path=path)
     text = matching_elem.text
 
@@ -64,8 +92,23 @@ def find_required_text(elem: ET.Element, *, path: str) -> str:
 
 def find_optional_text(elem: ET.Element, *, path: str) -> str | None:
     """
-    Find the text of the first element matching ``path``, or return None
+    Find the text of the first element matching `path`, or return None
     if the element is missing, has no text, or has empty text.
+
+    Consider this example:
+
+        <photo>
+            <id>123456789</id>
+            <title></title>
+        </photo>
+
+    If we looked up the text in `.//id`, the function returns `123456789`.
+
+    If we looked up the text in `.//title`, the function returns `None`
+    because the element doesn't have any text.
+
+    If we looked up the text in `.//description`, the function returns `None`
+    because that element doesn't exist.
     """
     matching_elem = elem.find(path=path)
 
@@ -73,6 +116,3 @@ def find_optional_text(elem: ET.Element, *, path: str) -> str | None:
         return None
 
     return matching_elem.text or None
-
-
-__all__ = ["find_required_elem", "find_required_text", "find_optional_text"]
