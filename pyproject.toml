@@ -28,7 +28,7 @@ license = "MIT AND (Apache-2.0)"
 cassettes = ["pytest", "pytest-vcr"]
 json = []
 login = ["authlib", "httpx", "silver-nitrate[types]"]
-mock_passwords = ["keyring", "pytest"]
+mock_keyring = ["keyring", "pytest"]
 types = ["pydantic"]
 xml = []
 

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.8.1 - 2025-07-01
+
+Fix the name of the `mock_keyring` extra.
+
 ## 1.8.0 - 2025-07-01
 
 Replace `nitrate.passwords` with `nitrate.mock_keyring`, a pytest fixture which is a bit clearer and better documented.
