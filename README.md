@@ -26,7 +26,7 @@ This library contains shared functions that are a bit too complicated to copy/pa
 *   `nitrate.cassettes` -- pytest fixtures for working with vcrpy to record HTTP requests.
 *   `nitrate.flickr_login` -- deal with the parts of the Flickr OAuth login process that are the same for every app.
 *   `nitrate.json` -- encode/decode JSON in a type-preserving way.
-*   `nitrate.passwords` -- helpers for dealing with passwords.
+*   `nitrate.mock_passwords` -- a pytest fixture to mock the keyring module.
 *   `nitrate.types` -- helpers for validating Python types at runtime.
 *   `nitrate.xml` -- type-safe helpers for finding matching elements or text in an XML document.
 

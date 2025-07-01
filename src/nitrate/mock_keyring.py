@@ -1,21 +1,48 @@
 """
-Retrieve passwords from the system keychain.
+A pytest fixture that allows you to mock the keyring module.
 
-This provides a thin wrapper around the ``keyring`` module.
+We use the keyring module in a lot of our code to save and retrieve
+passwords from the system keychain. However, we don't want to put real
+passwords in our CI environment or tests, i.e. GitHub Actions.
+
+This fixture creates a mock keyring where you can set passwords,
+which will then be used by the code under test. Here's an example of
+how to use it:
+
+    import keyring
+    from keyring.backend import KeyringBackend
+
+    from nitrate.mock_keyring import *  # noqa: F403
+
+
+    def test_my_code_using_passwords(mock_keyring: KeyringBackend):
+        mock_keyring.set_password("flickr_api", "key", "123")
+
+        # call code that uses `keyring.get_password()`
+
+This fixture is completely isolated from your real keychain -- it gets
+an empty set of passwords, and the test defines all the passwords
+which are available to your code.
 """
 
+from collections.abc import Iterator
+
 import keyring
+from keyring.backend import KeyringBackend
+import pytest
 
 
-def use_in_memory_keyring(initial_passwords: dict[tuple[str, str], str]) -> None:
+__all__ = ["mock_keyring"]
+
+
+@pytest.fixture
+def mock_keyring() -> Iterator[KeyringBackend]:
     """
-    Create an in-memory keyring with a given set of passwords.
-
-    This is useful for testing, when you want to test the interaction
-    between a piece of code and the keychain.
+    A pytest fixture that creates an empty, in-memory keyring that is
+    used for the duration of a test.
     """
 
-    class InMemoryKeyring(keyring.backend.KeyringBackend):
+    class InMemoryKeyring(KeyringBackend):
         """
         A keyring implementation which stores passwords in a dictionary.
 
@@ -61,12 +88,9 @@ def use_in_memory_keyring(initial_passwords: dict[tuple[str, str], str]) -> None
             """
             del self.passwords[(service_name, username)]
 
-    kr = InMemoryKeyring()
+    default_backend = keyring.get_keyring()
+    tmp_backend = InMemoryKeyring()
 
-    for (service_name, username), password in initial_passwords.items():
-        kr.set_password(service_name, username, password)
-
-    keyring.set_keyring(kr)
-
-
-__all__ = ["use_in_memory_keyring"]
+    keyring.set_keyring(tmp_backend)
+    yield tmp_backend
+    keyring.set_keyring(default_backend)
