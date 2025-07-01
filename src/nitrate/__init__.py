@@ -13,4 +13,4 @@ This file only exists to make Python's package management tools happy,
 and to hold the version number.
 """
 
-__version__ = "1.7.1"
+__version__ = "1.8.0"
