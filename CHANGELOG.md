@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.7.1 - 2025-07-01
+
+Remove `nitrate.passwords.get_required_password`, which was only ever used in one project, and inline it back into that project.
+
 ## v1.7.0 - 2025-06-30
 
 Remove `nitrate.comments`, which was only ever used in one project, and inline it back into that project.
